@@ -219,8 +219,8 @@ function send_window_next_monitor()
 end
 
 --- open different Chrome users
-hs.hotkey.bind({"alt"}, "1", chrome_switch_to({"Profiles", "Hao"}))
-hs.hotkey.bind({"alt"}, "2", chrome_switch_to({"Profiles", "Hao (Personal)"}))
+hs.hotkey.bind({"alt"}, "1", chrome_switch_to({"Profiles", "Hao (google.com)"}))
+hs.hotkey.bind({"alt"}, "2", chrome_switch_to({"Profiles", "Hao"}))
 hs.hotkey.bind({"alt"}, "`", chrome_switch_to({"File", "New Incognito Window"}))
 
 --- quick open applications
@@ -249,19 +249,22 @@ hs.hotkey.bind({"alt", "cmd"}, "Down", snap('down'))
 hs.hotkey.bind({"shift", "alt", "cmd"}, "Left", send_window_prev_monitor)
 hs.hotkey.bind({"shift", "alt", "cmd"}, "Right", send_window_next_monitor)
 
---- when connected to work Wifi, mute the computer
-local workWifi = 'Google-A'
-local outputDeviceName = 'Built-in Output'
-hs.wifi.watcher.new(function()
-    local currentWifi = hs.wifi.currentNetwork()
-    local currentOutput = hs.audiodevice.current(false)
-    if not currentWifi then
-        return
+-- Function from AutoMuteOnSleep Spoon
+function muteNonBluetoothOutputDevices(state)
+    if state == hs.caffeinate.watcher.systemDidWake or state == hs.caffeinate.watcher.systemWillSleep then
+        local devices = hs.audiodevice.allOutputDevices()
+    
+        for _, device in ipairs(devices) do
+            if device and device:transportType() ~= 'Bluetooth' then
+                -- Try to set volume to 0, if that fails (e.g. no volume control), mute it
+                _ = device:setVolume(0) or device:setMuted(true)
+            end
+        end
     end
-    if (currentWifi == workWifi and currentOutput.name == outputDeviceName) then
-        hs.audiodevice.findDeviceByName(outputDeviceName):setOutputMuted(true)
-    end
-end):start()
+end
+-- This creates the watcher and starts it, using the function defined above.
+local sleepWatcher = hs.caffeinate.watcher.new(muteNonBluetoothOutputDevices)
+sleepWatcher:start()
 
 --- key macros
 function keyStrokes(str)
