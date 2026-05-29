@@ -15,14 +15,13 @@ do
         E = "Finder",
         W = "WeChat",
         M = "Messages",
-        C = "Google Chrome",
+        C = "Claude",
         T = "iTerm",
         X = "Xcode",
         V = "Visual Studio Code",
         H = "Things3",
         N = "Notes",
         A = "Antigravity",
-        U = "Claude",
         G = "Gemini"
     }
     for key, app in pairs(apps) do
@@ -51,7 +50,7 @@ do
 
     -- Profiles
     hs.hotkey.bind({"alt"}, "1", chromeSwitchTo({"Profiles", "Hao"}))
-    hs.hotkey.bind({"alt"}, "2", chromeSwitchTo({"Profiles", "Hao (Personal)"}))
+    hs.hotkey.bind({"alt"}, "2", chromeSwitchTo({"Profiles", "Hao (Google)"}))
     hs.hotkey.bind({"alt"}, "`", chromeSwitchTo({"File", "New Incognito Window"}))
     
     -- Work related apps
