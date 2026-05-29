@@ -41,20 +41,10 @@ do
         end
     end
 
-    local function openChromeApp(name)
-        return function()
-            local path = os.getenv('HOME') .. '/Applications/Chrome Apps.localized/' .. name .. '.app'
-            hs.application.launchOrFocus(path)
-        end
-    end
-
     -- Profiles
     hs.hotkey.bind({"alt"}, "1", chromeSwitchTo({"Profiles", "Hao"}))
     hs.hotkey.bind({"alt"}, "2", chromeSwitchTo({"Profiles", "Hao (Google)"}))
     hs.hotkey.bind({"alt"}, "`", chromeSwitchTo({"File", "New Incognito Window"}))
-    
-    -- Work related apps
-    hs.hotkey.bind({"alt"}, "D", openChromeApp("Cider-V"))
 end
 
 --------------------------------------------------------------------------------
