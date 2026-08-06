@@ -63,7 +63,7 @@ end
 --------------------------------------------------------------------------------
 do
     hs.hotkey.bind({"shift", "alt", "cmd"}, "DELETE", function()
-        hs.caffeinate.systemSleep()
+        hs.execute("/usr/bin/pmset displaysleepnow")
     end)
 end
 
