@@ -1,0 +1,36 @@
+# ==========================================
+# 字体与渲染
+# ==========================================
+font-family = "JetBrains Mono"
+font-size = 14
+# 支持连字 (Ligatures)
+font-feature = calt
+font-feature = liga
+
+
+# ==========================================
+# 交互与鼠标行为
+# ==========================================
+# 选中文字自动复制到剪贴板（对标 iTerm2 经典体验）
+copy-on-select = clipboard
+
+# 鼠标指针输入时自动隐藏
+mouse-hide-while-typing = true
+
+# 点击 URL 自动使用默认浏览器打开
+mouse-scroll-multiplier = 2
+
+# 1. ⌥ ⌘ n -> 发送 Hex 0x1 0x6e (Ctrl+a n: 切换下一个窗口/新建)
+keybind = alt+super+n=text:\x01n
+
+# 2. ⌥ Backspace (⌥←Delete) -> 发送 Hex 0x1b 0x08 (向前删除一个词)
+keybind = alt+backspace=text:\x1b\x08
+
+# 3. ⌥ ← -> 发送 ^[ b (光标向左跳一个词)
+keybind = alt+left=text:\x1bb
+
+# 4. ⌥ → -> 发送 ^[ f (光标向右跳一个词)
+keybind = alt+right=text:\x1bf
+
+# 5. ⌥ Delete (⌥Del→，即向后删除键) -> 发送 ^[ d (向后删除一个词)
+keybind = alt+delete=text:\x1bd
