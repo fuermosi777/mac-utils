@@ -7,6 +7,26 @@ font-feature = calt
 font-feature = liga
 
 # ==========================================
+# 外观
+# ==========================================
+# 背景透明度 + 毛玻璃效果（macOS 上改动后需完全重启 Ghostty 才生效）
+background-opacity = 0.92
+background-blur = true
+
+# ==========================================
+# 窗口 / 工作目录行为
+# ==========================================
+# 增大回滚缓冲区（默认较小）
+scrollback-limit = 100000000
+# 关闭窗口/标签时如果有进程在跑，二次确认（这其实是默认值，显式写出便于自己记忆）
+confirm-close-surface = true
+# 新窗口/新标签固定从 home 开始，只有分屏继承当前目录
+working-directory = home
+window-inherit-working-directory = false
+tab-inherit-working-directory = false
+split-inherit-working-directory = true
+
+# ==========================================
 # 交互与鼠标行为
 # ==========================================
 copy-on-select = clipboard
@@ -14,7 +34,7 @@ mouse-hide-while-typing = true
 mouse-scroll-multiplier = 2
 
 # ==========================================
-# 快捷键（按需保留，删掉了与默认行为重复的两条）
+# 快捷键（已删除与默认行为重复的 alt+left / alt+right）
 # ==========================================
 # ⌥ ⌘ n -> 发送 Ctrl+a n（tmux 前缀切换窗口）
 keybind = alt+super+n=text:\x01n
