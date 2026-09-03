@@ -5,13 +5,8 @@ font-family = "JetBrains Mono"
 font-size = 14
 font-feature = calt
 font-feature = liga
-
-# ==========================================
-# 外观
-# ==========================================
-# 背景透明度 + 毛玻璃效果（macOS 上改动后需完全重启 Ghostty 才生效）
-background-opacity = 0.92
-background-blur = true
+theme = TokyoNight Storm
+window-colorspace = display-p3
 
 # ==========================================
 # 窗口 / 工作目录行为
