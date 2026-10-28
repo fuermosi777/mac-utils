@@ -1,0 +1,8 @@
+{
+  "chat.tools.terminal.autoApprove": {
+    "/^if command -v luac >/dev/null 2>&1; then for f in init\\.lua applications\\.lua chrome\\.lua key_macros\\.lua system\\.lua window_management\\.lua capslock_ime\\.lua; do luac -p \"\\$f\" \\|\\| exit 1; done; echo 'Lua syntax check passed'; else echo 'luac is not installed'; fi$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
+}
