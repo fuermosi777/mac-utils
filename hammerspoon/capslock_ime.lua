@@ -2,42 +2,54 @@
 -- [Module] Caps Lock 极速切换输入法 (hidutil F18 + KeyDown 零延迟接管)
 -- ============================================================================
 do
-    local chineseSourceIDs = {
-        "com.bytedance.inputmethod.doubaoime.pinyin",
-        "com.apple.inputmethod.SCIM.ITABC",
-    }
-    local lastChineseSourceID = chineseSourceIDs[1]
-    local englishSourceID = "com.apple.keylayout.ABC"
-
     -- 1. 驱动层映射 Caps Lock (0x700000039) -> F18 (0x70000006D)
     hs.execute([[hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x70000006D}]}']])
 
     -- 2. 自动兼容 ABC / U.S. 英文键盘布局
-    for _, id in ipairs(hs.keycodes.layouts(true)) do
+    local englishSourceID = "com.apple.keylayout.ABC"
+    for _, id in ipairs(hs.keycodes.layouts(true) or {}) do
         if id == "com.apple.keylayout.ABC" or id == "com.apple.keylayout.US" then
             englishSourceID = id
             break
         end
     end
 
+    -- 常见中文输入法
+    local chineseCandidates = {
+        "com.bytedance.inputmethod.doubaoime.pinyin", -- 豆包拼音 (家)
+        "com.apple.inputmethod.SCIM.ITABC",          -- 原生拼音 (公司)
+        "im.rime.inputmethod.Squirrel.Rime",
+        "com.sogou.inputmethod.sogou.pinyin",
+    }
+
+    local function getChineseSourceID()
+        local allMethods = hs.keycodes.methods() or {}
+        local set = {}
+        for _, m in ipairs(allMethods) do set[m] = true end
+        for _, cand in ipairs(chineseCandidates) do
+            if set[cand] then return cand end
+        end
+        return "com.apple.inputmethod.SCIM.ITABC"
+    end
+
+    local chineseSourceID = getChineseSourceID()
+
     -- 3. 切换中英文状态
     local function toggleInputSource()
-        local current = hs.keycodes.currentSourceID()
-        local isChineseSource = false
-        for _, sourceID in ipairs(chineseSourceIDs) do
-            if current == sourceID then
-                isChineseSource = true
-                lastChineseSourceID = current
-                break
-            end
-        end
+        local current = hs.keycodes.currentSourceID() or ""
+        -- 如果当前是中文（包含 SCIM、doubao、inputmethod、pinyin 等）
+        local isChinese = string.find(current, "SCIM") or
+                          string.find(current, "doubao") or
+                          string.find(current, "pinyin") or
+                          string.find(current, "rime") or
+                          string.find(current, "inputmethod")
 
-        if isChineseSource then
+        if isChinese then
             if not hs.keycodes.setLayout("ABC") and not hs.keycodes.setLayout("U.S.") then
                 hs.keycodes.currentSourceID(englishSourceID)
             end
         else
-            hs.keycodes.currentSourceID(lastChineseSourceID)
+            hs.keycodes.currentSourceID(chineseSourceID)
         end
     end
 
