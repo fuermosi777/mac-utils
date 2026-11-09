@@ -17,8 +17,13 @@ local function open(target)
 
             -- 2. 检查是否正在运行该名称的应用
             local runningApp = hs.application.get(name)
+            -- 注意：不能只用 activate()，它不会重新打开已关闭的窗口（如微信关掉主窗口后挂在后台）
+            -- launchOrFocusByBundleID 会发送 reopen 事件，把窗口带回来
             if runningApp then
-                runningApp:activate()
+                local bid = runningApp:bundleID()
+                if not (bid and hs.application.launchOrFocusByBundleID(bid)) then
+                    runningApp:activate()
+                end
                 return
             end
 
