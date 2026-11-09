@@ -23,7 +23,8 @@ do
     }
 
     local function getChineseSourceID()
-        local allMethods = hs.keycodes.methods() or {}
+        -- 注意：methods() 默认返回显示名称（如"豆包输入法"），必须传 true 才返回 source ID
+        local allMethods = hs.keycodes.methods(true) or {}
         local set = {}
         for _, m in ipairs(allMethods) do set[m] = true end
         for _, cand in ipairs(chineseCandidates) do
@@ -45,6 +46,7 @@ do
                           string.find(current, "inputmethod")
 
         if isChinese then
+            chineseSourceID = current -- 记住上次用的中文输入法
             if not hs.keycodes.setLayout("ABC") and not hs.keycodes.setLayout("U.S.") then
                 hs.keycodes.currentSourceID(englishSourceID)
             end
