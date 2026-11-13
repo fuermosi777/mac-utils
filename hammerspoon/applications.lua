@@ -15,8 +15,14 @@ local function open(target)
                 return
             end
 
-            -- 2. 检查是否正在运行该名称的应用
-            local runningApp = hs.application.get(name)
+            -- 2. 检查是否正在运行该名称的常规 GUI 应用（避免子串匹配到 PhotosReliveWidget 等后台插件）
+            local runningApp = nil
+            for _, app in ipairs({hs.application.find(name, true)}) do
+                if app:kind() == 1 then
+                    runningApp = app
+                    break
+                end
+            end
             -- 注意：不能只用 activate()，它不会重新打开已关闭的窗口（如微信关掉主窗口后挂在后台）
             -- launchOrFocusByBundleID 会发送 reopen 事件，把窗口带回来
             if runningApp then
