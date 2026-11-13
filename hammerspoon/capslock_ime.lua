@@ -16,10 +16,11 @@ do
 
     -- 常见中文输入法
     local chineseCandidates = {
+        "im.rime.inputmethod.Squirrel.Hans",         -- 鼠须管 (简体)
+        "im.rime.inputmethod.Squirrel.Hant",         -- 鼠须管 (繁体)
+        "im.rime.inputmethod.Squirrel.Rime",         -- 鼠须管 (旧版)
         "com.bytedance.inputmethod.doubaoime.pinyin", -- 豆包拼音 (家)
         "com.apple.inputmethod.SCIM.ITABC",          -- 原生拼音 (公司)
-        "im.rime.inputmethod.Squirrel.Rime",
-        "com.sogou.inputmethod.sogou.pinyin",
     }
 
     local function getChineseSourceID()
